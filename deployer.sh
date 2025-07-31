@@ -5,31 +5,34 @@ ENV="${HOME}/apps/.env"
 
 usage() {
     echo "Usage:"
-    echo "  $0 {up|down|stop|start|pull|restart}"
-    echo "  $0 <subfolder> {up|down|stop|start|pull|restart}"
+    echo "  $0 {compose-args...}            # Run for all subfolders"
+    echo "  $0 <subfolder> {compose-args...} # Run for specific subfolder"
     exit 1
 }
 
-if [[ $# -eq 1 ]]; then
-    # Loop through all subfolders
-    ACTION="$1"
+run_compose() {
+    local dir="$1"
+    shift
+    local args=("$@")
+    local dirName
+    dirName=$(basename "$dir")
+    echo "$dirName: docker compose ${args[*]}"
+    (cd "$dir" && docker compose --env-file "$ENV" "${args[@]}")
+}
+
+if [[ $# -eq 0 ]]; then
+    usage
+elif [[ -d "$MEDIA_DIR/$1" ]]; then
+    SUBFOLDER="$1"
+    shift
+    if [[ $# -eq 0 ]]; then
+        usage
+    fi
+    run_compose "$MEDIA_DIR/$SUBFOLDER" "$@"
+else
     for dir in "$MEDIA_DIR"/*/; do
         [ -d "$dir" ] || continue
-        echo "$ACTION $(basename "$dir")"
-        (cd "$dir" && docker compose --env-file $ENV  $ACTION)
+        run_compose "$dir" "$@" &
     done
-elif [[ $# -eq 2 ]]; then
-    # Run in a specific subfolder
-    SUBFOLDER="$1"
-    ACTION="$2"
-    TARGET="$MEDIA_DIR/$SUBFOLDER"
-    if [ -d "$TARGET" ]; then
-        echo "$ACTION $(basename "$dir")"
-        (cd "$TARGET" && docker compose --env-file $ENV $ACTION)
-    else
-        echo "Error: Subfolder '$SUBFOLDER' not found in $MEDIA_DIR"
-        exit 2
-    fi
-else
-    usage
+    wait
 fi
