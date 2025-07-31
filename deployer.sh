@@ -1,7 +1,8 @@
 #!/bin/bash
 
-MEDIA_DIR="${HOME}/apps/compose/media"
-ENV="${HOME}/apps/.env"
+APPS_DIR="${HOME}/apps"
+COMPOSE_DIR="$APPS_DIR/compose"
+ENV="$APPS_DIR/.env"
 
 usage() {
     echo "Usage:"
@@ -22,16 +23,26 @@ run_compose() {
 
 if [[ $# -eq 0 ]]; then
     usage
-elif [[ -d "$MEDIA_DIR/$1" ]]; then
-    SUBFOLDER="$1"
+elif [[ -d "$COMPOSE_DIR/$1" ]]; then
+    TARGET="$COMPOSE_DIR/$1"
     shift
     if [[ $# -eq 0 ]]; then
         usage
     fi
-    run_compose "$MEDIA_DIR/$SUBFOLDER" "$@"
+    # Find subfolders (depth 1, exclude . itself)
+    subdirs=($(find "$TARGET" -mindepth 1 -maxdepth 1 -type d))
+    if [[ ${#subdirs[@]} -gt 0 ]]; then
+        for dir in "${subdirs[@]}"; do
+            run_compose "$dir" "$@" &
+        done
+        wait
+    else
+        run_compose "$TARGET" "$@"
+    fi
 else
-    for dir in "$MEDIA_DIR"/*/; do
-        [ -d "$dir" ] || continue
+    # Find all directories containing a compose.yml in COMPOSE_DIR or its subfolders
+    compose_dirs=($(find "$COMPOSE_DIR" -type f -name 'compose.yml' -exec dirname {} \; | sort -u))
+    for dir in "${compose_dirs[@]}"; do
         run_compose "$dir" "$@" &
     done
     wait
