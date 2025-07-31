@@ -12,6 +12,8 @@ services:
       - $DATA/pg:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    networks:
+      - db
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -22,14 +24,20 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: $EMAIL
       PGADMIN_DEFAULT_PASSWORD: $DB_ROOT_PASSWORD
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
     volumes:
       - pgadmin_db:/var/lib/pgadmin
     ports:
       - '5433:80'
     depends_on:
       - pg
+    networks:
+      - db
+
+networks:
+  db:
+    external: true
 
 volumes:
   pgadmin_db:
