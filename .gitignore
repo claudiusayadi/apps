@@ -3,3 +3,4 @@
 *.log
 *.pem
 *.pub
+data/

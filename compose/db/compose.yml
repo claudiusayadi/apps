@@ -1,0 +1,40 @@
+name: db
+services:
+  pg:
+    image: postgres:latest
+    container_name: pg
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      POSTGRES_PASSWORD: $DB_ROOT_PASSWORD
+    volumes:
+      - $DATA/pg:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $EMAIL
+      PGADMIN_DEFAULT_PASSWORD: $DB_ROOT_PASSWORD
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    volumes:
+      - pgadmin_db:/var/lib/pgadmin
+    ports:
+      - '5433:80'
+    depends_on:
+      - pg
+
+volumes:
+  pgadmin_db:
+    driver: local
+    driver_opts:
+      type: none
+      device: $DATA/pgadmin
+      o: bind

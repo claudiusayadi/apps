@@ -1,5 +1,4 @@
 name: vaultwarden
-
 services:
   vaultwarden:
     image: vaultwarden/server:latest
@@ -14,4 +13,4 @@ services:
       - ./data:/data
       - ./logs:/var/log/vaultwarden
     ports:
-      - 127.0.0.1:8000:80
+      - 8000:80
