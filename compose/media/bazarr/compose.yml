@@ -16,7 +16,7 @@ services:
     volumes:
       - $DATA/bazarr/config:/config
       - $DATA/movies:/movies
-      - $DATA/tv:/tv
+      - $DATA/shows:/shows
     ports:
       - 6767:6767
 

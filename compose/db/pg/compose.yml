@@ -1,0 +1,25 @@
+name: db
+services:
+  pg:
+    image: postgres:latest
+    container_name: pg
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      POSTGRES_PASSWORD: $DB_PASSWORD
+    volumes:
+      - $DATA/pg:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  db:
+    external: true

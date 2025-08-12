@@ -1,0 +1,36 @@
+name: pgadmin
+services:
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $EMAIL
+      PGADMIN_DEFAULT_PASSWORD: $DB_PASSWORD
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    volumes:
+      - pgadmin_db:/var/lib/pgadmin
+    ports:
+      - '5433:80'
+    networks:
+      - db
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:80 || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  db:
+    external: true
+
+volumes:
+  pgadmin_db:
+    driver: local
+    driver_opts:
+      type: none
+      device: $DATA/pgadmin
+      o: bind
