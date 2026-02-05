@@ -1,0 +1,25 @@
+---
+name: sonarr
+services:
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - mediatek
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+    volumes:
+      - $DATA/sonarr/data:/config
+      - $DATA/tv:/tv
+      - $DATA/downloads:/downloads
+    ports:
+      - 8989:8989
+
+networks:
+  mediatek:
+    external: true

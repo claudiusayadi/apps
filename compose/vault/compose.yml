@@ -1,0 +1,16 @@
+# name: vaultwarden
+# services:
+#   vaultwarden:
+#     image: vaultwarden/server:latest
+#     container_name: vaultwarden
+#     restart: unless-stopped
+#     security_opt:
+#       - no-new-privileges:true
+#     environment:
+#       DOMAIN: https://${DOMAIN}
+#       ADMIN_TOKEN: $ADMIN_TOKEN
+#     volumes:
+#       - ./data:/data
+#       - ./logs:/var/log/vaultwarden
+#     ports:
+#       - 8000:80

@@ -1,0 +1,44 @@
+{
+	// See https://code.visualstudio.com/docs/editor/tasks for more information
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Docker Compose: Pull",
+			"type": "shell",
+			"command": "docker compose --env-file ${input:envFile} -f ${input:composeFile} pull",
+			"problemMatcher": []
+		},
+		{
+			"label": "Docker Compose: Start",
+			"type": "shell",
+			"command": "docker compose --env-file ${input:envFile} -f ${input:composeFile} up -d",
+			"problemMatcher": []
+		},
+		{
+			"label": "Docker Compose: Stop",
+			"type": "shell",
+			"command": "docker compose --env-file ${input:envFile} -f ${input:composeFile} stop --remove-orphans",
+			"problemMatcher": []
+		},
+		{
+			"label": "Docker Compose: Recreate",
+			"type": "shell",
+			"command": "docker compose --env-file ${input:envFile} -f ${input:composeFile} up -d --force-recreate",
+			"problemMatcher": []
+		}
+	],
+	"inputs": [
+		{
+			"id": "envFile",
+			"type": "promptString",
+			"description": "Path to .env file",
+			"default": "/home/dovely/apps/.env"
+		},
+		{
+			"id": "composeFile",
+			"type": "promptString",
+			"description": "Path to docker-compose file",
+			"default": "${workspaceFolder}/compose.yml"
+		}
+	]
+}

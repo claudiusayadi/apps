@@ -1,0 +1,23 @@
+---
+name: prowlarr
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - mediatek
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=$TZ
+    volumes:
+      - $DATA/prowlarr/data:/config
+    ports:
+      - 9696:9696
+
+networks:
+  mediatek:
+    external: true
