@@ -8,17 +8,17 @@ This repository contains Docker Compose configurations for various self-hosted a
 
 ## Services
 
-## Services
-
 - admin:
 - - none yet
 - db
 - - pg
 - - pgadmin
+- - mssql
 - media
 - - bazarr
 - - flaresolverr
 - - jellyfin
+- -
 - - prowlarr
 - - qbittorrent
 - - radarr
