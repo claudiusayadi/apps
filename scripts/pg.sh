@@ -13,5 +13,3 @@ docker exec pg pg_dumpall -U postgres | gzip > "$BACKUP_DIR/backup_$TIMESTAMP.sq
 ls -t "$BACKUP_DIR"/backup_*.sql.gz | tail -n +$((MAX_BACKUPS + 1)) | xargs -r rm
 
 echo "Backup completed: backup_$TIMESTAMP.sql.gz"
-
-   0 12 * * * /home/dovely/apps/scripts/pg.sh >> /home/dovely/apps/backups/logs/pg.log 2>&1
