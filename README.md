@@ -18,22 +18,17 @@ This repository contains Docker Compose configurations for various self-hosted a
 - - bazarr
 - - flaresolverr
 - - jellyfin
-- -
+- - jellyseer
 - - prowlarr
 - - qbittorrent
 - - radarr
 - - sonarr
-- vaults
-- - vaultwarden
-- vpn
-- - wg-easy
 
 ## Prerequisites
 
 - Docker Engine 20.10.0 or later
 - Docker Compose 2.0.0 or later
-- Domain name with SSL certificate (for production deployment)
-- Minimum 1GB RAM and 10GB storage space
+- Domain name with SSL certificate (for production deployment) - I have my setup for production, this is 100% local setup repo.
 
 ## Quick Start
 
@@ -42,7 +37,7 @@ This repository contains Docker Compose configurations for various self-hosted a
 Use the deployer script to deploy any service:
 
 ```bash
-bash deployer.sh <service> up -d
+bash scripts/deployer.sh <service> up
 ```
 
 ```

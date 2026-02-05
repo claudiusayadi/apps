@@ -1,6 +1,7 @@
 #!/bin/bash
 
-BACKUP_DIR="/home/dovely/apps/backups/pg"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BACKUP_DIR="${BACKUP_DIR:-$ROOT_DIR/backups/pg}"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 MAX_BACKUPS=2
 
