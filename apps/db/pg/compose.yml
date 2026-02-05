@@ -11,13 +11,13 @@ services:
       TZ: $TZ
       PGTZ: $TZ
     volumes:
-      - ${DATA}/pg:/var/lib/postgresql
+      - $DATA/pg:/var/lib/postgresql
     ports:
-      - '5432:5432'
+      - "5432:5432"
     networks:
       - pg
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5

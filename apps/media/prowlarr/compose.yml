@@ -8,7 +8,7 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
-      - mediatek
+      - streama
     environment:
       - PUID=$PUID
       - PGID=$PGID
@@ -19,5 +19,5 @@ services:
       - 9696:9696
 
 networks:
-  mediatek:
+  streama:
     external: true
